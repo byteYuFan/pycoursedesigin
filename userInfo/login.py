@@ -1,12 +1,11 @@
-# 用户注册
-from .models import UserInfo
+# 用户登录模块
 from django import forms
+from .models import UserInfo
 
 
-class UserRegistrationForm(forms.ModelForm):
+class UserLoginForm(forms.ModelForm):
     username = forms.CharField(max_length=255)
     password = forms.CharField(max_length=255)
-    email = forms.EmailField()
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -26,23 +25,18 @@ class UserRegistrationForm(forms.ModelForm):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         password = cleaned_data.get('password')
-        email = cleaned_data.get('email')
 
-        if username and password and email:
-            try:
-                user_with_username = UserInfo.objects.get(username=username)
-                raise forms.ValidationError('Username already exists.')
-            except UserInfo.DoesNotExist:
-                pass
+        if username and password:
 
             try:
-                user_with_email = UserInfo.objects.get(email=email)
-                raise forms.ValidationError('Email already exists.')
+                user = UserInfo.objects.get(username=username)
+                if user.username == "" or user.password != password:
+                    raise forms.ValidationError('Invalid username or password.')
+                cleaned_data['user_id']=user.user_id
             except UserInfo.DoesNotExist:
-                pass
-
+                raise forms.ValidationError('Invalid username or password.')
         return cleaned_data
 
     class Meta:
         model = UserInfo
-        fields = ['username', 'password', 'email']
+        fields = ['username', 'password']

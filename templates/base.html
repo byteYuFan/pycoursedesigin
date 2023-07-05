@@ -7,13 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     {% load static %}
+    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
+
+    {% block contact-style %}{% endblock %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary"  >
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <h1><a class="navbar-brand" href="{% url 'home' %}" id="index">首页</a></h1>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -22,48 +26,184 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'detail' %}">NAT详细文档</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="{% url 'contact' %}">联系我们</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            Dropdown
+                            个人信息
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="{% url 'information' %}">用户个人信息</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="{% url 'modify-password' %}">修改密码</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'bars' %}">账单</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            软件下载
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=w-server.png">Windows服务端</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=c-client.png">Windows客户端</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=client-ui.png">Windows客户端(带界面)</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=server.png">Linux服务端</a>
+                            </li>
+                             <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=client.png">Linux客户端</a>
+                            </li>
+                             <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=client.png">Linux客户端(带界面)</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'download' %}?file_name=client.png">Mac服务器</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'download' %}?file_name=client.png">Mac客户端</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'download' %}?file_name=client.png">Mac客户端(带界面)</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
+                        <a class="nav-link" href="{% url 'usage' %}">使用说明</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <div class="auth-model">
+                    <a class="btn btn-primary" href="{% url 'login' %}" role="button">登录</a>
+                    <a class="btn btn-primary" href="{% url 'register' %}" role="button">注册</a>
+                </div>
+
             </div>
+            <div class="nav-item user-info">
+                <img src="{% static 'images/person-circle.svg' %}" alt="Bootstrap" width="32" height="32">
+                <span>hi,</span>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#static-exit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"></path>
+                        <path fill-rule="evenodd"
+                              d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"></path>
+                    </svg>
+                    退出
+                </button>
+                <!-- exit Modal -->
+
+            </div>
+
         </div>
     </nav>
 </header>
->
-
-<div class="content">
-    {% block content %}
-    {% endblock %}
+<div class="index-info">
+    <div class="index-content">
+        {% block index %}
+        {% endblock %}
+    </div>
 </div>
+<main class="container">
 
-<footer>
+
+    <div class="login-content auth-content">
+        {% block login-content %}
+        {% endblock %}
+    </div>
+
+    <div class="register-content auth-content">
+        {% block register-content %}
+        {% endblock %}
+    </div>
+
+    <div class="modify-password auth-content">
+        {% block modify-user-password %}
+        {% endblock %}
+    </div>
+
+    <div class="auth-logo-content">
+        {% block auth-logo-login %}
+        {% endblock %}
+
+        {% block auth-logo-register %}
+        {% endblock %}
+
+        {% block auth-logo-modify-password %}
+        {% endblock %}
+    </div>
+
+    <div class="detail-content">
+        {% block detail %}
+        {% endblock %}
+    </div>
+
+    <div class="single-user-info">
+        {% block single-info %}
+        {% endblock %}
+    </div>
+
+    <div class="contact">
+        {% block contact %}
+        {% endblock %}
+    </div>
+
+    {% block form-bar %}
+    {% endblock %}
+
+    {% block usage %}
+
+    {% endblock %}
+
+</main>
+
+<div class="modal fade" id="static-exit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">您要退出吗？</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="font-size: 0.8em">
+                更多资料请查看我们的官网
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer">
     <!-- 共享的页脚代码 -->
-    <p>&copy; 2023 My Website. All rights reserved.</p>
+    <p>
+        <span>&copy; 2023 Python Course Designed.</span>
+        <a href="https://beian.miit.gov.cn/">陕ICP备2023004623号-1</a>
+    </p>
 </footer>
+<script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
+{% block auth-scripts %}{% endblock %}
+{% block single-information %}{% endblock %}}
 </body>
 </html>

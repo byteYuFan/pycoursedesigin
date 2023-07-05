@@ -1,0 +1,223 @@
+body {
+    background-color: #f5f5f5;
+}
+
+h1 {
+    display: inline;
+
+}
+
+.index-info {
+    margin: 20px;
+    border: 1px solid #7b8888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.index-info .index-content{
+    width: 500px;
+    box-sizing: content-box;
+}
+.carousel-inner img {
+    width: 500px;
+    height: 300px;
+    /*height: 300px;*/
+}
+
+.index-info .index-content {
+    margin: 20px;
+}
+
+#index {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+main.container {
+    margin-top: 20px;
+    border: 1px solid #7b8888;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 73vh; /* 可根据需要设置高度 */
+    overflow: auto;
+
+}
+
+.single-user-info h2 {
+    padding-bottom: 15px;
+}
+
+header .user-info {
+    width: 300px;
+    height: 50px;
+    margin-left: 50px;
+    margin-right: 5px;
+    box-sizing: border-box;
+    /*border: 1px solid pink;*/
+    float: right;
+    line-height: 50px;
+    position: relative;
+    display: none;
+}
+
+header .user-info button {
+    margin-left: 30px;
+}
+
+/**/
+.container .detail-content {
+    /*display: none;*/
+    box-sizing: border-box;
+    height: 72vh;
+    overflow: auto;
+    margin-left: 20px;
+    /*border: 2px solid #008c8c;*/
+}
+
+header .user-info span {
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.container .detail-content iframe {
+    width: 1000px;
+    height: 62vh;
+}
+
+.container .single-user-info {
+}
+
+.auth-content {
+    margin: 20px 50px;
+    /*border: 1px solid rgb(37, 132, 231);*/
+    padding: 10px;
+    width: 500px;
+    text-align: left;
+    border-radius: 0.375rem;
+}
+
+.auth-logo-content image {
+    width: 500px;
+    height: 300px;
+}
+
+.auth-logo {
+    padding: 10px;
+    width: 500px;
+}
+
+/*.auth-logo image {*/
+/*    width: 100px;*/
+/*    height: 100px;*/
+/*}*/
+
+.auth-content h2 {
+    text-align: center;
+    color: #000000;
+    padding-bottom: 20px;
+}
+
+
+/*登录注册*/
+#login-form {
+    border-radius: 0.375rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.auth-model {
+    margin-right: 100px;
+}
+
+.auth-model button {
+    margin: 0 50px;
+    display: inline-block;
+}
+
+/*footer {*/
+/*    background-color: #f5f5f5;*/
+/*    padding: 20px;*/
+/*    text-align: center;*/
+/*    font-size: 14px;*/
+/*    color: #777;*/
+/*    font-weight: bold;*/
+/*    font-family: Consolas, serif ;*/
+/*}*/
+
+.footer {
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    font-family: Consolas, serif;
+    font-weight: 500;
+}
+
+.footer p span {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.footer p a {
+    color: #333;
+    text-decoration: none;
+}
+
+.footer p a:hover {
+    text-decoration: underline;
+}
+
+
+/*鼠标导航栏样式*/
+header nav .navbar-brand {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+header nav .navbar-brand:hover {
+
+    font-weight: bold; /* 设置字体加粗 */
+    text-shadow: 0 0 1px #cbffea; /* 设置文字发光效果，可以根据需要调整发光颜色和大小 */
+    color: #0dcaf0;
+}
+
+header nav .navbar-brand:active {
+    color: #a1fcd6; /* 设置点击时的颜色 */
+}
+
+
+@media (max-width: 768px) {
+    .auth-logo-content {
+        display: none;
+    }
+}
+
+#contact-form .col-md-12 {
+    margin: 10px 20px;
+    /*width: 200px;*/
+}
+
+#contact-form .col-md-12 input {
+    width: 300px;
+    /*width: 200px;*/
+    /* margin-left: 60px;*/
+}
+
+#contact-form .col-md-12 textarea {
+    width: 300px;
+    height: 20px;
+    overflow-y: hidden;
+    /*width: 200px;*/
+}
+
+.fh5co-contact-info {
+    margin-right: 30px;;
+
+}
+
+.container .form-bar {
+    width: 500px;
+}

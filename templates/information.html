@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block single-info %}
+    {% csrf_token %}
+    <h2>
+        您的信息
+    </h2>
+    <form class="row g-3 needs-validation" novalidate id="single-information">
+        <div class="col-md-4">
+            <label for="real-name" class="form-label">姓名</label>
+            <input type="text" class="form-control" id="real-name" placeholder="输入您的姓名" required name="name">
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label for="real-age" class="form-label">年龄</label>
+            <input type="text" class="form-control" id="real-age" placeholder="输入您的年龄" required name="age">
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="col-md-4" >
+            <label for="real-username" class="form-label">Username</label>
+            <div class="input-group has-validation">
+                <input type="text" class="form-control" id="real-username"  required name="username">
+                <div class="invalid-feedback">
+                   Looks good!
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="real-city" class="form-label">城市</label>
+            <input type="text" class="form-control" id="real-city" required name="city" placeholder="输入您的城市">
+            <div class="invalid-feedback">
+                Please provide a valid city.
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="real-mind" class="form-label">今天的心情</label>
+            <select class="form-select" id="real-mind" required>
+                <option selected disabled value="">Choose...</option>
+                <option value="0">非常开心</option>
+                <option value="1">较为开心</option>
+                <option value="2">开心</option>
+                <option value="3">一般</option>
+                <option value="4">不开心</option>
+            </select>
+            <div class="invalid-feedback">
+                Please select a valid state.
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                    Agree to terms and conditions
+                </label>
+                <div class="invalid-feedback">
+                    You must agree before submitting.
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block single-information %}
+    <script>
+     $(function (){
+          $('#real-username').val(user.username);
+
+     })
+
+    </script>
+
+{% endblock %}

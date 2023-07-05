@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contact-style %}
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+{%  endblock %}
+{% block contact %}
+<div id="fh5co-contact">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-md-push-1 animate-box">
+
+					<div class="fh5co-contact-info">
+						<h3>联系信息</h3>
+						<ul>
+							<li class="address">陕西西安, <br> 雁翔路58号 7-427</li>
+							<li class="phone"><a href="tel://18091323970">+86 18091323970</a></li>
+							<li class="email"><a href="854978151@qq.com">854978151@qq.com</a></li>
+							<li class="url"><a href="https://github.com">github</a></li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-md-6 animate-box">
+					<h3>Get In Touch</h3>
+					<form method="post" id="contact-form">
+                        {% csrf_token %}
+						<div class="row form-group">
+							<div class="col-md-12">
+{#								<label for="contact-name">your name</label>#}
+								<input type="text" id="username" class="form-control" placeholder="您的姓名" name="username">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<!-- <label for="email">Email</label> -->
+								<input type="text" id="email" class="form-control" placeholder="您的邮件地址" name="email">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<!-- <label for="subject">Subject</label> -->
+								<input type="text" id="subject" class="form-control" placeholder="邮件主题" name="subject">
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-md-12">
+								<!-- <label for="message">Message</label> -->
+								<textarea name="text" id="text" cols="30" rows="10" class="form-control" placeholder="你想说的话" ></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Send Message" class="btn btn-primary">
+						</div>
+
+					</form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block auth-scripts %}
+    <script>
+        $(document).ready(function () {
+            // 监听表单提交事件
+            $('#contact-form').submit(function (event) {
+                event.preventDefault(); // 阻止表单默认提交
+                // 发起 Ajax 请求
+                $.ajax({
+                    url: '{% url 'contact' %}',  // 登录处理视图的 URL
+                    type: 'POST',
+                    data: $(this).serialize(),  // 序列化表单数据
+                    success: function (response) {
+                        if (response.success) {
+                            // 登录成功
+                            let user = {
+                                username: $("#username").val(),
+                                token:response.token
+                            };
+                           alert('Send information successfully');
+                        } else {
+                            // 登录失败
+                            alert('Send suggest error');
+                        }
+                    },
+                    error: function (response) {
+                        alert('An error occurred during send.');  // 处理请求错误
+                    }
+                });
+            });
+
+        });
+    </script>
+
+{% endblock %}

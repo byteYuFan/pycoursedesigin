@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block auth-logo-register %}
+{% block auth-logo-login %}
     <div class="auth-logo">
         <img src="{% static 'images/LOGO.svg' %}" alt="LOGO">
     </div>
 {% endblock %}
-{% block register-content %}
-    <h2>注册您的信息</h2>
-     <form method="post" id="registration-form">
+{% block login-content %}
+    <h2>登录了解更多信息</h2>
+    {#    <form method="post" id="login-form">#}
+    {#        {% csrf_token %}#}
+    {#        {{ form.as_p }}#}
+    {#        <button type="submit">Login</button>#}
+    {#    </form>#}
+    <form method="post" id="login-form">
         {% csrf_token %}
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
@@ -17,42 +22,46 @@
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码">
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">邮箱</label>
-            <input type="text" class="form-control" id="email" placeholder="请输入您的邮箱" name="email">
-        </div>
-        <button type="submit" class="btn btn-primary">注册</button>
+        <button type="submit" class="btn btn-primary">登录</button>
     </form>
-
-
 {% endblock %}
 
+{#data = serializer.loads(token)#}
 {% block auth-scripts %}
     <script>
         $(document).ready(function () {
             // 监听表单提交事件
-            $('#registration-form').submit(function (event) {
+            $('#login-form').submit(function (event) {
                 event.preventDefault(); // 阻止表单默认提交
                 // 发起 Ajax 请求
                 $.ajax({
-                    url: '{% url 'register' %}',  // 注册处理视图的 URL
+                    url: '{% url 'login' %}',  // 登录处理视图的 URL
                     type: 'POST',
                     data: $(this).serialize(),  // 序列化表单数据
                     success: function (response) {
                         if (response.success) {
+                            // 登录成功
+                            let user = {
+                                username: $("#username").val(),
+                                token:response.token
+                            };
+                            localStorage.setItem('user', JSON.stringify(user));
+                            // 调用修改函数
 
-                            showAlert('success', 'Registration successful!', '3s后跳转到主页');
+
+                            showAlert('success', 'Login successful!' + '  1.5s后跳转到主页');
+                            {#$(' #login-form').hide()#}
+                            // 延时 3 秒后执行回调函数
                             setTimeout(function () {
-                                window.location.href = '{% url 'login' %}';  // 重定向到成功页面
+                                window.location.href = '{% url 'home' %}';  // 重定向到成功页面
                             }, 1500);  // 延时时间为 3000 毫秒，即 3 秒
-
                         } else {
-                            // 注册失败
-                            showAlert('danger', 'Registration failed. ');
+                            // 登录失败
+                            showAlert('danger', 'Login failed. Please check your credentials.');
                         }
                     },
                     error: function (response) {
-                        showAlert('danger', 'An error occurred during registration.');  // 处理请求错误
+                        showAlert('danger', 'An error occurred during login.');  // 处理请求错误
                     }
                 });
             });
@@ -69,8 +78,9 @@
                 alertHtml += '</div>';
 
                 // 添加警告框到页面
-                $(alertHtml).prependTo('#registration-form');
+                $(alertHtml).prependTo('#login-form');
             }
         });
     </script>
+
 {% endblock %}

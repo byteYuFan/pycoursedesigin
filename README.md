@@ -34,6 +34,19 @@ INSTALLED_APPS = [
 
 ```
 
+```shell
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "python",
+        "USER": "root",
+        "PASSWORD": "123456",
+        "HOST": "pogf.com.cn",
+        "PORT": "3309",
+    }
+}
+```
+
 
 ## 3. 用户服务介绍
 
@@ -108,9 +121,9 @@ from .models import UserInfo
 admin.site.register(UserInfo)
 ```
 
-## 2. 用户注册功能
+### 2. 用户注册功能
 
-### 1. 模型建立
+#### 1. 模型建立
 
 **Django 提供了一个辅助类让你可以从一个 Django 模型创建一个 Form 类。**
 
@@ -128,7 +141,7 @@ class Meta:
 
 **Meta类用于提供额外的元数据（metadata），以指定表单的行为和特性。**Meta类被用于定义`UserInfoForm`表单类的元数据。其中，model属性指定了与表单相关联的模型，这里是`UserInfo`模型。这意味着该表单将用于创建和更新`UserInfo`模型的实例。`fields`属性指定了要在表单中显示的字段列表。表单将显示`username`、`password`和`email`字段，用户可以填写这些字段的值。这些字段与`UserInfo`模型中的对应字段相关联。
 
-### 2. 定义校验规则
+#### 2.  定义校验规则
 
 查找`Django`官方文档我们了解到：
 
@@ -136,8 +149,8 @@ class Meta:
 
 于是我们对`username`、`password`、`email`制定相应的校验规则，添加到`UserRegistrationForm`类中去：
 
-```python
 
+```python
 class UserRegistrationForm(forms.ModelForm):
     # ...
 
@@ -166,14 +179,13 @@ class UserRegistrationForm(forms.ModelForm):
         return cleaned_data
 
     # ...
-
 ```
 
 super()是一个内建函数，用于调用父类的方法。它通常在子类中的方法中使用，以便在重写父类方法时仍然可以执行父类的逻辑。
 
 
 
-### 3. view建立
+#### 3. view建立
 
 ```python
 def register(request):
@@ -190,7 +202,104 @@ def register(request):
 **简单模板测试**
 
 ```html
+{% block register-content %}
+    <h2>User Registration</h2>
+    <form method="post">
+{#        {% csrf_token %}#}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+    </form>
+{% endblock %}
+```
+
+`{% csrf_token %}`：这是Django模板标签，用于生成和包含CSRF令牌。CSRF令牌用于防止跨站请求伪造攻击。
+
+`{{ form.as_p }}` 是Django模板语法中用于渲染表单实例的一种方式。`form` 是一个表单实例对象，`as_p` 是一个表单渲染的快捷方式。
+
+
+
+#### 4. 路由注册
+
+```python
+# userInfo/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('user-info/register', views.register, name='register'),
+]
+```
+
+```python
+# course/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include("userInfo.urls"))
+]
+
 ```
 
 
 
+#### 5. 函数测试
+
+##### 1. 界面展示：
+
+![](./images/context-register.png)
+
+附带css代码：
+
+```css
+.register-content {
+    margin: 20px 50px;
+    border: 1px solid #008c8c;
+    padding: 10px;
+    width: 500px;
+    background-color: #fff3cd;
+    text-align: center;
+}
+
+.register-content h2 {
+    text-align: center;
+    color: #f8c085;
+    padding-bottom: 20px;
+}
+
+.register-content p label {
+    text-align: left;
+    width: 100px;
+}
+.register-content p input{
+    background-color: #f2f3f5;
+}
+.register-content p input:focus {
+    outline: 1px solid #1e80ff;
+    border-color: #1e80ff;
+    border-radius: 5px;
+}
+```
+
+##### 2. 注册成功案例
+
+- `username`：3210561027
+- `password`：3210561027
+- `email`：854978151@qq.com
+
+![](./images/login-successfully.png)
+
+##### 3. 注册失败案例
+
+- `username`：3210561027
+- `password`：3210561027
+- `email`：854978151@qq.com
+
+![](./images/login-fail.png)
+
+##### 4. 数据库显示
+![](./images/database-userInfo.png)
+
+我们可以看到，用户的信息已经正确的存储到数据库中去了
