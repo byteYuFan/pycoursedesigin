@@ -738,7 +738,7 @@ mysql> select password from userInfo_userinfo where username='3210561027';
 1 row in set (0.09 sec)
 ```
 
-![](E:\code\pycode\course\images\5-modify.png)
+![](./images/5-modify.png)
 
 **修改后**
 
@@ -1021,3 +1021,90 @@ class UserBar(models.Model):
 
 ### 5.1. 账单显示功能
 
+#### 1. Django过滤器
+
+```python
+# custom_filters.py
+
+from django import template
+
+register = template.Library()
+
+
+@register.filter
+def divide(value, divisor):
+    return round(int(value) / divisor, 2)
+
+```
+
+- `divide`函数接受两个参数：`value`和`divisor`，表示被除数和除数。
+- 在函数体内，它执行整数除法运算，并使用`round`函数将结果保留两位小数。
+- 最后，函数返回运算结果。
+
+#### 2. Bars 模板
+
+```html
+{% extends 'base.html' %}
+{% load  custom_filters %}
+{% block form-bar %}
+    <table class="table table-info  table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Bars</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for bar in bars %}
+            <tr>
+                <th scope="row">1</th>
+                <td>{{ bar.username }}</td>
+                <td>{{ bar.bar|divide:65536 }} MB</td>
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}
+
+```
+
+- 在`{% block form-bar %}`和`{% endblock %}`之间的部分定义了一个表格，用于展示用户使用数据量。
+- 使用`{% for bar in bars %}`指令迭代遍历一个名为`bars`的变量（可能是从视图传递过来的上下文中获取的），每个`bar`代表一个bars对象。
+- 在表格的每一行中，使用`{{ bar.username }}`和`{{ bar.bar|divide:65536 }} MB`显示属性。`{{ bar.bar|divide:65536 }}`使用了刚刚定义的自定义过滤器`divide`进行除法运算，并显示结果为MB单位的值。
+- 最后，使用`{% endfor %}`结束`{% for %}`循环。
+
+#### 3. view 建立
+
+```python
+@login_required
+def bar_list(request, username):
+    bars = UserBar.objects.filter(username=username)
+    return render(request, 'bars.html', {'bars': bars})
+```
+
+#### 4. 路由注册
+
+```python
+   path('bars', views.bar_list, name='bars'),
+```
+
+#### 5. 功能测试
+
+**分别使用`admin`和`3210561027`两个账户测试结果**
+
+```shell
+mysql> select * from bars where username in ('admin','3210561027');
++----+----------+------------+
+| id | bar      | username   |
++----+----------+------------+
+|  1 | 10870288 | admin      |
+|  2 |  4486264 | 3210561027 |
++----+----------+------------+
+```
+
+![](./images/8-bars1.png)
+
+![](./images/8-bars2.png)
