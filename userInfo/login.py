@@ -32,7 +32,7 @@ class UserLoginForm(forms.ModelForm):
                 user = UserInfo.objects.get(username=username)
                 if user.username == "" or user.password != password:
                     raise forms.ValidationError('Invalid username or password.')
-                cleaned_data['user_id']=user.user_id
+                cleaned_data['user_id'] = user.user_id
             except UserInfo.DoesNotExist:
                 raise forms.ValidationError('Invalid username or password.')
         return cleaned_data

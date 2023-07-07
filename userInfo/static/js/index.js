@@ -6,18 +6,27 @@ function testCurrentURL() {
         $(".register-content").show()
         $(".login-content").hide()
         $(".modify-password").hide()
+        $(".reset-password").hide()
     } else if (currentURL.includes('login')) {
         $(".login-content").show()
         $(".register-content").hide()
         $(".modify-password").hide()
+        $(".reset-password").hide()
     } else if (currentURL.includes('modify-password')) {
         $(".login-content").hide()
         $(".register-content").hide()
         $(".modify-password").show()
+        $(".reset-password").hide()
+    } else if (currentURL.includes('reset-password')) {
+        $(".login-content").hide()
+        $(".register-content").hide()
+        $(".modify-password").hide()
+        $(".reset-password").show()
     } else {
         $(".login-content").hide()
         $(".register-content").hide()
         $(".modify-password").hide()
+        $(".reset-password").hide()
     }
 
     if (pathname === "/") {

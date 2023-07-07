@@ -12,6 +12,7 @@
     {% block contact-style %}{% endblock %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    {% block register-style %}{% endblock %}
 </head>
 <body>
 <header>
@@ -34,7 +35,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            个人信息
+                            用户(USER)
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{% url 'information' %}">用户个人信息</a></li>
@@ -42,6 +43,10 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{% url 'modify-password' %}">修改密码</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                             <li><a class="dropdown-item" href="{% url 'reset-password' %}">重置密码</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -69,10 +74,10 @@
                             <li><a class="dropdown-item"
                                    href="{% url 'download' %}?file_name=server.png">Linux服务端</a>
                             </li>
-                             <li><a class="dropdown-item"
+                            <li><a class="dropdown-item"
                                    href="{% url 'download' %}?file_name=client.png">Linux客户端</a>
                             </li>
-                             <li><a class="dropdown-item"
+                            <li><a class="dropdown-item"
                                    href="{% url 'download' %}?file_name=client.png">Linux客户端(带界面)</a>
                             </li>
                             <li>
@@ -82,7 +87,8 @@
                             </li>
                             <li><a class="dropdown-item" href="{% url 'download' %}?file_name=client.png">Mac客户端</a>
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'download' %}?file_name=client.png">Mac客户端(带界面)</a>
+                            <li><a class="dropdown-item"
+                                   href="{% url 'download' %}?file_name=client.png">Mac客户端(带界面)</a>
                             </li>
                         </ul>
                     </li>
@@ -139,6 +145,10 @@
         {% block modify-user-password %}
         {% endblock %}
     </div>
+    <div class="reset-password auth-content">
+        {% block rest-user-password %}
+        {% endblock %}
+    </div>
 
     <div class="auth-logo-content">
         {% block auth-logo-login %}
@@ -148,6 +158,9 @@
         {% endblock %}
 
         {% block auth-logo-modify-password %}
+        {% endblock %}
+
+        {%  block auth-logo-rest-password %}
         {% endblock %}
     </div>
 

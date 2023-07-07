@@ -7,11 +7,6 @@
 {% endblock %}
 {% block login-content %}
     <h2>登录了解更多信息</h2>
-    {#    <form method="post" id="login-form">#}
-    {#        {% csrf_token %}#}
-    {#        {{ form.as_p }}#}
-    {#        <button type="submit">Login</button>#}
-    {#    </form>#}
     <form method="post" id="login-form">
         {% csrf_token %}
         <div class="mb-3">

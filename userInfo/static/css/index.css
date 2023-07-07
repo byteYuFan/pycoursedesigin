@@ -13,15 +13,27 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
-.index-info .index-content{
-    width: 500px;
+
+h5 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #666;
+}
+
+h5 + p {
+    font-weight: bold;
+    color: #0b5ed7;
+}
+
+.index-info .index-content {
+    width: 1200px;
     box-sizing: content-box;
 }
+
 .carousel-inner img {
-    width: 500px;
-    height: 300px;
-    /*height: 300px;*/
+
 }
 
 .index-info .index-content {
@@ -220,4 +232,14 @@ header nav .navbar-brand:active {
 
 .container .form-bar {
     width: 500px;
+}
+
+.register-content form .mb-3 {
+    position: relative;
+}
+
+#sendButton {
+    position: absolute;
+    right: 1px;
+    top: 30px;
 }

@@ -1,7 +1,9 @@
 import os
 
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 
+from .function import generate_verification_code, store_verification_code, check_verification_code
 from .models import UserInfo, UserBar
 from .register import UserRegistrationForm
 from .login import UserLoginForm
@@ -10,6 +12,7 @@ from itsdangerous import URLSafeTimedSerializer, BadSignature
 from .modify_password import ModifyUserPassword
 from .user_suggest import UserSuggestForm
 from django.conf import settings
+from .reset_password import  ResetPassword
 
 # 创建令牌生成器
 serializer = URLSafeTimedSerializer('wyf')
@@ -18,7 +21,10 @@ serializer = URLSafeTimedSerializer('wyf')
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
-
+        email = form.data.get("email")
+        code = form.data.get("emailcode")
+        if not check_verification_code(email, code):
+            return JsonResponse({'success': False, 'errors': "验证码错误"})  # 返回失败的 JSON 响应和表单错误信息
         if form.is_valid():
             form.save()
             return JsonResponse({'success': True})  # 返回成功的 JSON 响应
@@ -100,6 +106,19 @@ def modifyPassword(request, username):
     return render(request, 'modify_password.html', {'form': form})
 
 
+def resetPassword(request):
+    if request.method == 'POST':
+        form = ResetPassword(request.POST)
+        if form.is_valid():
+            return JsonResponse({'success': True})
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({'success': False, 'errors': errors})
+    else:
+        form = ResetPassword()
+    return render(request, 'rest_password.html', {'form': form})
+
+
 @login_required
 def userInformation(request, username):
     return render(request, 'information.html')
@@ -141,5 +160,20 @@ def download_file(request):
     except FileNotFoundError:
         return HttpResponse('<h1 style="color:red;">File not found.</h1>')
 
+
 def usage(request):
-    return render(request,'usage.html')
+    return render(request, 'usage.html')
+
+
+def send_email_verification(request):
+    if request.method == "POST":
+        email = request.POST.get("email")  # 获取前端传递的邮箱地址
+        subject = 'NAT验证码'
+        message = generate_verification_code()
+        store_verification_code(email, message)
+        from_email = '18091323970@163.com'
+        # 执行发送邮箱验证码的逻辑
+        send_mail(subject, message, from_email, [email])
+        return JsonResponse({"message": "邮箱验证码发送成功", "success": True})
+    else:
+        return JsonResponse({"message": "请求方法不支持", "success": False})

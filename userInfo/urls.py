@@ -8,8 +8,10 @@ urlpatterns = [
     path('detail', views.detail, name='detail'),
     path('user-info', views.userInformation, name='information'),
     path('modify-password', views.modifyPassword, name='modify-password'),
-    path('contact',views.contact,name='contact'),
-    path('bars',views.bar_list,name='bars'),
-    path('download',views.download_file,name='download'),
-    path('usage',views.usage,name='usage')
+    path('reset-password',views.resetPassword,name='reset-password'),
+    path('contact', views.contact, name='contact'),
+    path('bars', views.bar_list, name='bars'),
+    path('download', views.download_file, name='download'),
+    path('usage', views.usage, name='usage'),
+    path('send-email-verification/', views.send_email_verification, name='send_email_verification'),
 ]
