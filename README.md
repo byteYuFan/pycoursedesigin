@@ -6,7 +6,25 @@
 
 ## 1. 项目介绍
 
+本项目的名称我们暂且称之为`Dj-NAT`，`Dj-NAT`项目是一个基于`Django`搭建的一个具有交互式的`web`服务,该项目提供了登录、注册、修改密码、重置密码、联系我们、软件下载、账单展示等多种功能，界面UI使用的框架为`Bootstrap5`，页面交互技术采用的是`jQuary`。
 
+项目的目的主要是为`NAT内网穿透工具`打造一个界面，便于用户与开发者之间的联系，用户可以通过该平台进行注册账号使用`NAT`软件提供的服务，实现内部服务可以通过公网进行访问。同时该`Dj-NAT`项目也提供了一个账单显示的功能，将显示用户的实时使用流量(即就是通过`NAT`软件代理服务使用流量的情况)。后续呢，将会拓展一个缴费功能，便于更好的管理用户的使用权限。
+
+整个系统的服务体系如下图所示：
+
+![](./images/9-.png)
+
+请求的流程如下所示
+
+1. 客户端发送HTTP请求至Django服务器。
+2. Django服务器接收到请求并解析请求。它会根据请求的URL匹配相应的URL模式，找到对应的视图函数来处理请求。
+3. 在视图函数中，Django可以进行一系列操作，包括从Redis缓存中获取数据、从MySQL数据库中获取数据、对数据进行处理等。
+4. 如果需要获取数据，Django会首先检查缓存中是否存在相应的数据。如果存在，Django直接从缓存中读取数据，并生成响应。
+5. 如果Redis缓存中不存在所需的数据，Django会执行与MySQL数据库的交互操作。它会使用ORM（对象关系映射）工具，例如Django自带的ORM，将数据库操作转化为Python对象的操作。在这个过程中，Django会根据模型定义和查询条件生成相应的SQL语句，并与MySQL数据库建立连接。
+6. 对于MySQL数据库，Django会使用适配器连接到数据库，并执行相应的SQL查询语句。查询结果将以对象的形式返回给视图函数。
+7. 在视图函数中，可以对查询结果进行处理、筛选、排序等操作，然后根据业务需求生成响应数据。生成响应时，可以选择返回HTML页面、JSON数据、重定向等不同的响应类型。
+8. 同时，Django还可以将查询结果存储到Redis缓存中，以便下次相同请求时可以直接从缓存中读取数据，提高响应速度。
+9. 最后，Django服务器将生成的响应发送回客户端，完成请求-响应的过程。
 
 ## 2. 项目搭建
 
@@ -114,6 +132,184 @@ $python manage.py createsuperuser
 ![](./images/1-admin.png)
 
 ![](./images/1-enteradmin.png)
+
+### 2.4. 目录结构
+
+```shell
+[root@localhost ~]# tree pycoursedesigin/
+pycoursedesigin/
+├── course
+│   ├── asgi.py
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── images
+│   ├── 1-admin.png
+│   ├── 1-enteradmin.png
+│   ├── 2-code.png
+│   ├── 2-redis.png
+│   ├── 2-sendemail-test.png
+│   ├── 3-register-fail.png
+│   ├── 3-register.png
+│   ├── 3-register-successfully.png
+│   ├── 4-login2.png
+│   ├── 4-logins.png
+│   ├── 5-modify.png
+│   ├── 6-reset.png
+│   ├── 7-su.png
+│   ├── 8-bars1.png
+│   ├── 8-bars2.png
+│   ├── context-register.png
+│   ├── database-userInfo.png
+│   ├── login-fail.png
+│   ├── login-successfully.png
+│   ├── slide1.png
+│   ├── slide1.psd
+│   ├── slide2.png
+│   ├── slide2.psd
+│   ├── slide3.png
+│   └── slide3.psd
+├── manage.py
+├── MobaXterm_centos7-2_20230705_153636.rtf
+├── README.md
+├── requirements.txt
+├── templates
+│   ├── bars.html
+│   ├── base.html
+│   ├── contact.html
+│   ├── detail.html
+│   ├── home.html
+│   ├── index.html
+│   ├── information.html
+│   ├── login.html
+│   ├── modify_password.html
+│   ├── register.html
+│   ├── rest_password.html
+│   └── usage.html
+└── userInfo
+    ├── admin.py
+    ├── apps.py
+    ├── detail.py
+    ├── function.py
+    ├── __init__.py
+    ├── login.py
+    ├── migrations
+    │   ├── 0001_initial.py
+    │   ├── 0002_alter_userinfo_email_alter_userinfo_username.py
+    │   ├── 0003_alter_userinfo_username.py
+    │   ├── 0004_alter_userinfo_email.py
+    │   ├── 0005_usersuggest.py
+    │   ├── 0006_userbar.py
+    │   ├── 0007_alter_userbar_username.py
+    │   ├── 0008_rename_bars_userbar_bar.py
+    │   └── __init__.py
+    ├── models.py
+    ├── modify_password.py
+    ├── register.py
+    ├── reset_password.py
+    ├── static
+    │   ├── bootstrap
+    │   │   ├── css
+    │   │   │   ├── bootstrap.css
+    │   │   │   ├── bootstrap.css.map
+    │   │   │   ├── bootstrap-grid.css
+    │   │   │   ├── bootstrap-grid.css.map
+    │   │   │   ├── bootstrap-grid.min.css
+    │   │   │   ├── bootstrap-grid.min.css.map
+    │   │   │   ├── bootstrap-grid.rtl.css
+    │   │   │   ├── bootstrap-grid.rtl.css.map
+    │   │   │   ├── bootstrap-grid.rtl.min.css
+    │   │   │   ├── bootstrap-grid.rtl.min.css.map
+    │   │   │   ├── bootstrap.min.css
+    │   │   │   ├── bootstrap.min.css.map
+    │   │   │   ├── bootstrap-reboot.css
+    │   │   │   ├── bootstrap-reboot.css.map
+    │   │   │   ├── bootstrap-reboot.min.css
+    │   │   │   ├── bootstrap-reboot.min.css.map
+    │   │   │   ├── bootstrap-reboot.rtl.css
+    │   │   │   ├── bootstrap-reboot.rtl.css.map
+    │   │   │   ├── bootstrap-reboot.rtl.min.css
+    │   │   │   ├── bootstrap-reboot.rtl.min.css.map
+    │   │   │   ├── bootstrap.rtl.css
+    │   │   │   ├── bootstrap.rtl.css.map
+    │   │   │   ├── bootstrap.rtl.min.css
+    │   │   │   ├── bootstrap.rtl.min.css.map
+    │   │   │   ├── bootstrap-utilities.css
+    │   │   │   ├── bootstrap-utilities.css.map
+    │   │   │   ├── bootstrap-utilities.min.css
+    │   │   │   ├── bootstrap-utilities.min.css.map
+    │   │   │   ├── bootstrap-utilities.rtl.css
+    │   │   │   ├── bootstrap-utilities.rtl.css.map
+    │   │   │   ├── bootstrap-utilities.rtl.min.css
+    │   │   │   └── bootstrap-utilities.rtl.min.css.map
+    │   │   └── js
+    │   │       ├── bootstrap.bundle.js
+    │   │       ├── bootstrap.bundle.js.map
+    │   │       ├── bootstrap.bundle.min.js
+    │   │       ├── bootstrap.bundle.min.js.map
+    │   │       ├── bootstrap.esm.js
+    │   │       ├── bootstrap.esm.js.map
+    │   │       ├── bootstrap.esm.min.js
+    │   │       ├── bootstrap.esm.min.js.map
+    │   │       ├── bootstrap.js
+    │   │       ├── bootstrap.js.map
+    │   │       ├── bootstrap.min.js
+    │   │       └── bootstrap.min.js.map
+    │   ├── css
+    │   │   ├── index.css
+    │   │   ├── md.css
+    │   │   ├── reset.css
+    │   │   └── style.css
+    │   ├── detail.html
+    │   ├── images
+    │   │   ├── 1-NAT\346\246\202\350\277\260.png
+    │   │   ├── 1.png
+    │   │   ├── 2.png
+    │   │   ├── 3.png
+    │   │   ├── LOGO.svg
+    │   │   ├── person-circle.svg
+    │   │   ├── slide1.png
+    │   │   ├── slide2.png
+    │   │   └── slide3.png
+    │   ├── js
+    │   │   ├── index.js
+    │   │   ├── jquery.js
+    │   │   └── register.js
+    │   └── soft
+    │       ├── client.png
+    │       └── server.png
+    ├── templatetags
+    │   ├── custom_filters.py
+    │   └── __init__.py
+    ├── tests.py
+    ├── urls.py
+    ├── user_suggest.py
+    └── views.py
+
+
+```
+
+### 2.5. 项目包版本
+
+```shell
+asgiref==3.7.2
+async-timeout==4.0.2
+backports.zoneinfo==0.2.1
+cffi==1.15.1
+cryptography==41.0.1
+Django==4.2.2
+itsdangerous==2.1.2
+mysqlclient==2.2.0
+pycparser==2.21
+pyOpenSSL==23.2.0
+redis==4.6.0
+sqlparse==0.4.4
+typing_extensions==4.6.3
+tzdata==2023.3
+```
+
+
 
 ## 3. 用户模型
 
@@ -264,6 +460,8 @@ $(document).ready(function () {
 ![](./images/2-code.png)
 
 ![](./images/2-redis.png)
+
+当我们执行发送邮件的功能时，发现邮箱正确的收到了邮件，且将`email`作为`key`,`code`作为`value`存入到了`redis`数据库中去了.
 
 ### 3.3. 用户注册功能
 
@@ -416,7 +614,7 @@ path('user-info/register', views.register, name='register'),
 
 ![](./images/3-register-fail.png)
 
-**注：所有的css代码见附件**
+
 
 
 
@@ -594,6 +792,8 @@ def login_view(request):
 
 ![](./images/4-login2.png)
 
+当我们登录成功的时候，发现服务端正确的返回了token值，且存储到浏览器的缓存中去。
+
 ### 3.5. 用户修改密码
 
 #### 1. 模型建立
@@ -690,6 +890,8 @@ def modifyPassword(request, username):
     return render(request, 'modify_password.html', {'form': form}
 ```
 
+当请求方法为POST时，表示用户提交了修改密码的表单。我们创建一个`ModifyUserPassword`表单实例，将用户提交的数据传递给表单进行验证。如果表单数据有效，则返回一个包含成功状态的JSON响应；否则，返回一个包含错误信息的JSON响应。当请求方法为GET时，表示用户访问了修改密码的页面。我们创建一个空的`ModifyUserPassword`表单实例，将其传递给模板进行渲染，并返回渲染后的页面。无论是POST请求还是GET请求，都会使用`render`函数将相应的模板渲染成HTML页面，将表单实例传递给模板。
+
 **修改模板**
 
 ```html
@@ -751,6 +953,8 @@ mysql> select password from userInfo_userinfo where username='3210561027';
 +----------+
 1 row in set (0.10 sec)
 ```
+
+进行密码修改之前，我们可以看到`3210561027`用户的密码为`3210561027`,修改之后我们再次查询该用户，发现密码已经成功的修改了。且浏览器给我们了具体的响应。
 
 #### 3.6. 用户重置密码
 
@@ -827,6 +1031,8 @@ def resetPassword(request):
     return render(request, 'rest_password.html', {'form': form})
 ```
 
+当请求方法为POST时，表示用户提交了重置密码的表单。我们创建一个`ResetPassword`表单实例，将用户提交的数据传递给表单进行验证。如果表单数据有效，则返回一个包含成功状态的JSON响应；否则，返回一个包含错误信息的JSON响应。当请求方法为GET时，表示用户访问了重置密码的页面。我们创建一个空的`ResetPassword`表单实例，将其传递给模板进行渲染，并返回渲染后的页面。无论是POST请求还是GET请求，都会使用`render`函数将相应的模板渲染成HTML页面，将表单实例传递给模板。
+
 #### 4. 路由注册
 
 ```python
@@ -860,6 +1066,8 @@ mysql> select password from userInfo_userinfo where username='3210561027';
 +-----------+
 1 row in set (0.11 sec)
 ```
+
+进行密码重置之前，我们可以看到`3210561027`用户的密码为`12345678`,重置之后我们再次查询该用户，发现密码已经成功的重置了。且浏览器给我们了具体的响应。
 
 ### 3.6. 鉴权中间件
 
@@ -945,6 +1153,13 @@ class UserSuggestForm(forms.ModelForm):
         fields = ['username', 'email', 'subject', 'text']
 ```
 
+- `username`：使用`forms.CharField`定义的字符字段，最大长度为255。
+- `email`：使用`forms.EmailField`定义的邮箱字段，最大长度为255。
+- `subject`：使用`forms.CharField`定义的字符字段，最大长度为255。
+- `text`：使用`forms.CharField`定义的文本字段，使用`forms.Textarea`小部件进行渲染。
+
+在`Meta`类中，指定了该表单类与`UserSuggest`模型的关联，指定了需要包含的字段为`username`、`email`、`subject`和`text`。
+
 #### 2. 定义校验规则
 
 ```python
@@ -955,6 +1170,8 @@ class UserSuggestForm(forms.ModelForm):
             raise forms.ValidationError("用户名长度不能少于5个字符")
         return username
 ```
+
+该校验规则与上面的类似，不在进行赘述。
 
 #### 3. view建立
 
@@ -973,6 +1190,8 @@ def contact(request, username):
         form = UserSuggestForm()
     return render(request, 'contact.html', {'form': form}
 ```
+
+视图函数`contact`，使用了`@login_required`装饰器来限制只有登录用户才能访问该页面。函数接受`request`和`username`作为参数。如果请求方法是POST，表示用户提交了联系表单的数据。它会对提交的数据进行验证，如果验证通过，则保存表单数据并返回一个成功的JSON响应。如果验证不通过，将返回一个包含错误信息的JSON响应。如果请求方法不是POST，即用户初次访问页面或使用GET请求访问页面，它会创建一个空的`UserSuggestForm`实例，并将其传递给模板进行渲染。最后，通过`render`函数将渲染后的页面作为HTTP响应返回给用户。
 
 #### 4. 路由注册
 
@@ -1001,6 +1220,8 @@ mysql> select * from userInfo_usersuggest where username='3210561027';
 1 row in set (0.14 sec)
 
 ```
+
+在测试之前，我们通过`SELECT`语句查找`username`为`3210561027`用户的建议信息，我们发现什么都没有，结果为`Empty set`,当我们执行该`url`之后，再次执行查询语句，发现用户的信息正确的插入到数据库中去，且浏览器给出了正确的响应。
 
 ## 5. 账单模型
 
@@ -1037,9 +1258,7 @@ def divide(value, divisor):
 
 ```
 
-- `divide`函数接受两个参数：`value`和`divisor`，表示被除数和除数。
-- 在函数体内，它执行整数除法运算，并使用`round`函数将结果保留两位小数。
-- 最后，函数返回运算结果。
+divide`函数接受两个参数：`value`和`divisor`，表示被除数和除数。在函数体内，它执行整数除法运算，并使用`round`函数将结果保留两位小数，最后，函数返回运算结果。
 
 #### 2. Bars 模板
 
@@ -1085,6 +1304,8 @@ def bar_list(request, username):
     return render(request, 'bars.html', {'bars': bars})
 ```
 
+该视图函数`bar_list`，使用了`@login_required`装饰器来限制只有登录用户才能访问该页面。函数接受`request`和`username`作为参数。它通过查询数据库中的`UserBar`模型，过滤出属于特定`username`的所有`bars`。然后，通过`render`函数将查询到的`bars`数据传递给`bars.html`模板进行渲染，并返回渲染后的页面作为HTTP响应。在这个函数中，用户必须先进行登录才能访问该页面，否则将被重定向到登录页面或采取其他适当的处理方式。
+
 #### 4. 路由注册
 
 ```python
@@ -1108,3 +1329,51 @@ mysql> select * from bars where username in ('admin','3210561027');
 ![](./images/8-bars1.png)
 
 ![](./images/8-bars2.png)
+
+我们可以明确的看见，系统正确的将不同用户所对应的账单显示了出了，且正确的计算了，`byte`单位所对应的`MB`的值，测试成功。
+
+## 6. 其他路由
+
+```python
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('user-info/register', views.register, name='register'),
+    path('user-info/login', views.login_view, name='login'),
+    path('detail', views.detail, name='detail'),
+    path('user-info', views.userInformation, name='information'),
+    path('modify-password', views.modifyPassword, name='modify-password'),
+    path('reset-password',views.resetPassword,name='reset-password'),
+    path('contact', views.contact, name='contact'),
+    path('bars', views.bar_list, name='bars'),
+    path('download', views.download_file, name='download'),
+    path('usage', views.usage, name='usage'),
+    path('send-email-verification/', views.send_email_verification, name='send_email_verification'),
+]
+```
+
+1. `''`：空路径，对应`views.home`视图函数，用于显示主页。
+2. `user-info/register`：用户注册路径，对应`views.register`视图函数，用于处理用户注册逻辑。
+3. `user-info/login`：用户登录路径，对应`views.login_view`视图函数，用于处理用户登录逻辑。
+4. `detail`：详细信息路径，对应`views.detail`视图函数，用于显示开发`NAT`的详细信息。
+5. `user-info`：用户信息路径，对应`views.userInformation`视图函数，用于显示用户信息。
+6. `modify-password`：修改密码路径，对应`views.modifyPassword`视图函数，用于处理修改密码逻辑。
+7. `reset-password`：重置密码路径，对应`views.resetPassword`视图函数，用于处理重置密码逻辑。
+8. `contact`：联系路径，对应`views.contact`视图函数，用于显示联系页面。
+9. `bars`：展示`bars`路径，对应`views.bar_list`视图函数，用于展示`bars`列表。
+10. `download`：下载路径，对应`views.download_file`视图函数，用于处理文件下载逻辑。
+11. `usage`：使用情况路径，对应`views.usage`视图函数，用于显示使用情况页面。
+12. `send-email-verification/`：发送邮件验证路径，对应`views.send_email_verification`视图函数，用于处理发送邮件验证码逻辑。
+
+## 7. 展望
+
+`Dj-NAT`项目大致就已经完成了，后续呢，计划添加一个售卖服务的功能，即就是`bars`展示的那块，用户可以通过购买流量来使用对应的内网`NAT`服务。
+
+项目的不足：
+
+1. 用户密码加密：对于用户密码，应该使用加密算法进行处理，以增加数据安全性。可以使用哈希算法，如bcrypt或SHA-256等，在存储密码时进行加密处理，并在用户登录时进行验证。
+2. 模块独立性：确保模块之间的独立性和解耦，以提高代码的可维护性和可扩展性。可以通过定义清晰的接口和抽象层，以及采用设计模式和组件化思想，将功能模块进行分离和解耦。
+3. 前后端分离：考虑将前端代码和后端代码进行分离，采用前后端分离的架构。可以使用现代前端框架（如React、Vue.js）开发前端应用，与后端通过API进行通信，实现前后端解耦，提高开发效率和用户体验。
+4. Django用户认证框架：Django本身提供了完善的用户认证框架，包括用户注册、登录、密码重置等功能。考虑在项目中使用Django的用户认证框架，以减少重复开发和提高安全性。
+5. 缓存和消息队列：考虑使用缓存（如Redis）和消息队列（如RabbitMQ）来优化系统性能和提高可扩展性。通过使用缓存机制减轻数据库的压力，并使用消息队列实现异步任务处理和解耦。
+6. 数据库缓存层：引入数据库缓存层（如Redis缓存）来减轻MySQL数据库的压力。通过将常用的查询结果存储在缓存中，以减少对数据库的频繁访问，提高响应速度和性能。
+
